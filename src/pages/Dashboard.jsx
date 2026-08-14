@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { jobs } from "../data/jobs";
 import { STATUS_STYLES, DEFAULT_STATUS_STYLE } from "../data/statusStyles";
+import { getInitials } from "../utils/initials";
 import StatCard from "../components/StatCard";
 import StatusBadge from "../components/StatusBadge";
 import "./Dashboard.css";
@@ -43,12 +44,6 @@ const TOOLTIP_STYLE = {
 
 function statusColor(status) {
   return (STATUS_STYLES[status] || DEFAULT_STATUS_STYLE).color;
-}
-
-function clientInitials(name) {
-  if (!name) return "";
-  const words = name.trim().split(/\s+/);
-  return words.length > 1 ? `${words[0][0]}${words[1][0]}`.toUpperCase() : words[0].slice(0, 2).toUpperCase();
 }
 
 function Dashboard() {
@@ -271,7 +266,7 @@ function Dashboard() {
                   <td className="dashboard__jobno">{job.jobNo}</td>
                   <td>
                     <div className="dashboard__client">
-                      <span className="dashboard__client-avatar">{clientInitials(job.client)}</span>
+                      <span className="dashboard__client-avatar">{getInitials(job.client)}</span>
                       <span>{job.client}</span>
                     </div>
                   </td>

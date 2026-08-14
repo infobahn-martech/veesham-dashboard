@@ -1,26 +1,31 @@
 import { useLocation } from "react-router-dom";
 import { Menu, Search, Bell } from "lucide-react";
 import { getCurrentUser } from "../utils/auth";
+import { getInitials } from "../utils/initials";
 import "./Header.css";
 
 const PAGE_TITLES = {
-  "/dashboard": { title: "Dashboard", subtitle: "Overview of all production jobs" },
-  "/live-job-board": { title: "Live Job Status Board", subtitle: "Real-time job tracking" },
-  "/my-account": { title: "My Account", subtitle: "Manage your profile" },
+  "/dashboard": {
+    micro: "Production overview",
+    title: "Dashboard",
+    subtitle: "Overview of all production jobs",
+  },
+  "/live-job-board": {
+    micro: "Real-time tracking",
+    title: "Live Job Status Board",
+    subtitle: "Real-time job tracking across all press lines",
+  },
+  "/my-account": {
+    micro: "Account",
+    title: "My Account",
+    subtitle: "Manage your profile",
+  },
 };
-
-function initialsOf(name) {
-  if (!name) return "";
-  const parts = name.trim().split(/\s+/);
-  return parts.length > 1
-    ? `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase()
-    : parts[0].slice(0, 2).toUpperCase();
-}
 
 function Header({ onOpenMobileNav }) {
   const location = useLocation();
   const user = getCurrentUser();
-  const page = PAGE_TITLES[location.pathname] || { title: "", subtitle: "" };
+  const page = PAGE_TITLES[location.pathname] || { micro: "", title: "", subtitle: "" };
 
   return (
     <header className="header">
@@ -35,7 +40,7 @@ function Header({ onOpenMobileNav }) {
         </button>
         <div>
           <div className="header__micro-row" aria-hidden="true">
-            <span className="header__micro-label">Production overview</span>
+            <span className="header__micro-label">{page.micro}</span>
             <span className="header__cmyk">
               <span className="header__cmyk-dot header__cmyk-dot--c" />
               <span className="header__cmyk-dot header__cmyk-dot--m" />
@@ -57,7 +62,7 @@ function Header({ onOpenMobileNav }) {
         </button>
 
         <div className="header__user">
-          <div className="header__avatar">{initialsOf(user?.name)}</div>
+          <div className="header__avatar">{getInitials(user?.name)}</div>
           <div className="header__user-info">
             <span className="header__user-name">{user?.name}</span>
             <span className="header__user-role">{user?.role}</span>
