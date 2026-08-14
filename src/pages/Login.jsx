@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Printer, AlertCircle, Eye, EyeOff, ShieldCheck, Zap, BarChart3 } from "lucide-react";
+import { Printer, AlertCircle, Eye, EyeOff, Lock } from "lucide-react";
 import { login } from "../utils/auth";
 import "./Login.css";
 
-const HIGHLIGHTS = [
-  { icon: Zap, text: "Real-time job status tracking" },
-  { icon: BarChart3, text: "Production insights at a glance" },
-  { icon: ShieldCheck, text: "Secure, role-based access" },
+const DEMO_EMAIL = "admin@veesham.com";
+const DEMO_PASSWORD = "admin123";
+
+const PRESS_JOBS = [
+  { id: "#4819", area: "Line 1 · Finishing", status: "complete" },
+  { id: "#4823", area: "Die-cut · Bay 2", status: "queued" },
+  { id: "#4817", area: "Press 1 · Digital", status: "running" },
+  { id: "#4814", area: "Line 2 · Binding", status: "complete" },
 ];
 
 function Login() {
@@ -29,44 +33,68 @@ function Login() {
 
   return (
     <div className="login">
-      <div className="login__panel">
-        <div className="login__panel-shape login__panel-shape--one" />
-        <div className="login__panel-shape login__panel-shape--two" />
-        <div className="login__panel-content">
-          <div className="login__panel-brand">
-            <div className="login__logo">
-              <Printer size={24} strokeWidth={2.2} />
-            </div>
-            <span className="login__panel-brand-name">Veesham</span>
+      <div className="login__brand-panel">
+        <div className="login__grid-bg" aria-hidden="true" />
+        <div className="login__vignette" aria-hidden="true" />
+
+        <div className="login__top-row">
+          <span className="login__kicker">
+            <span className="login__reg-mark" aria-hidden="true" />
+            Production systems
+          </span>
+          <div className="login__cmyk" aria-hidden="true">
+            <span className="login__cmyk-dot login__cmyk-dot--c" />
+            <span className="login__cmyk-dot login__cmyk-dot--m" />
+            <span className="login__cmyk-dot login__cmyk-dot--y" />
+            <span className="login__cmyk-dot login__cmyk-dot--k" />
+            <span className="login__reg-mark" />
           </div>
-          <h2 className="login__panel-heading">Production job tracking, simplified.</h2>
-          <p className="login__panel-copy">
-            Monitor every job from intake to delivery with a live, unified operations dashboard.
-          </p>
-          <ul className="login__panel-list">
-            {HIGHLIGHTS.map(({ icon: Icon, text }) => (
-              <li key={text}>
-                <Icon size={16} strokeWidth={2} />
-                <span>{text}</span>
-              </li>
-            ))}
-          </ul>
+        </div>
+
+        <div className="login__brand-content">
+          <h1 className="login__wordmark">VEESHAM</h1>
+          <p className="login__tagline">Production Job Dashboard</p>
+
+          <div className="login__press-floor">
+            <div className="login__press-floor-header">
+              <span className="login__press-floor-title">
+                <span className="login__status-dot login__status-dot--live" />
+                Live press floor
+              </span>
+              <span className="login__press-floor-meta">03 lines active</span>
+            </div>
+            <ul className="login__press-floor-list">
+              {PRESS_JOBS.map((job) => (
+                <li key={job.id} className="login__press-floor-row">
+                  <span className={`login__status-dot login__status-dot--${job.status}`} />
+                  <span className="login__job-id">JOB {job.id}</span>
+                  <span className="login__job-area">{job.area}</span>
+                  <span className={`login__job-status login__job-status--${job.status}`}>{job.status}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="login__footer-mark">
+          <span className="login__reg-mark" aria-hidden="true" />
+          Press floor network · Uptime 99.98%
         </div>
       </div>
 
       <div className="login__form-side">
-        <div className="card login__card animate-in--scale">
-          <div className="login__brand">
-            <div className="login__logo login__logo--compact">
-              <Printer size={22} strokeWidth={2.2} />
+        <div className="login__form-wrap">
+          <div className="login__form-header">
+            <div className="login__logo">
+              <Printer size={20} strokeWidth={2.2} />
             </div>
-            <h1 className="login__brand-name">Veesham</h1>
-            <p className="login__brand-tagline">Production Job Dashboard</p>
+            <h2 className="login__heading">Sign in</h2>
+            <p className="login__subtitle">Enter your production dashboard credentials</p>
           </div>
 
           <form className="login__form" onSubmit={handleSubmit}>
             {error && (
-              <div className="login__error">
+              <div className="login__error" role="alert">
                 <AlertCircle size={16} strokeWidth={2} />
                 <span>{error}</span>
               </div>
@@ -115,17 +143,36 @@ function Login() {
                 />
                 <span>Remember me</span>
               </label>
+              <button type="button" className="login__forgot">
+                Forgot password?
+              </button>
             </div>
 
-            <button type="submit" className="btn btn-primary login__submit">
-              Sign In
+            <button type="submit" className="login__submit">
+              Sign in
             </button>
           </form>
 
           <div className="login__demo">
-            <span className="login__demo-label">Demo access</span>
-            <code>admin@veesham.com / admin123</code>
+            <div className="login__demo-divider">
+              <span />
+              Demo access
+              <span />
+            </div>
+            <div className="login__demo-chips">
+              <button type="button" className="login__chip" onClick={() => setEmail(DEMO_EMAIL)}>
+                {DEMO_EMAIL}
+              </button>
+              <button type="button" className="login__chip" onClick={() => setPassword(DEMO_PASSWORD)}>
+                {DEMO_PASSWORD}
+              </button>
+            </div>
           </div>
+
+          <p className="login__security">
+            <Lock size={12} strokeWidth={2.2} />
+            Secured connection · SSO available
+          </p>
         </div>
       </div>
     </div>
