@@ -7,7 +7,7 @@ import "./Sidebar.css";
 const NAV_ITEMS = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/live-job-board", label: "Live Job Status", icon: Radio },
-  { to: "/my-account", label: "My Account", icon: UserCircle },
+  // { to: "/my-account", label: "My Account", icon: UserCircle },
 ];
 
 function Sidebar({ isMobileNavOpen, onCloseMobileNav }) {
@@ -38,7 +38,7 @@ function Sidebar({ isMobileNavOpen, onCloseMobileNav }) {
         </button>
       </div>
 
-      <span className="sidebar__section-label">Main</span>
+      {/* <span className="sidebar__section-label">Main</span> */}
 
       <nav className="sidebar__nav">
         {NAV_ITEMS.map(({ to, label, icon: Icon }) => (

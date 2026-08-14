@@ -40,7 +40,7 @@ function Header({ onOpenMobileNav }) {
         </button>
         <div>
           <div className="header__micro-row" aria-hidden="true">
-            <span className="header__micro-label">{page.micro}</span>
+            {/* <span className="header__micro-label">{page.micro}</span> */}
             <span className="header__cmyk">
               <span className="header__cmyk-dot header__cmyk-dot--c" />
               <span className="header__cmyk-dot header__cmyk-dot--m" />
