@@ -21,13 +21,17 @@ function MyAccount() {
 
   return (
     <div className="my-account">
-      <div className="card my-account__card">
+      <div className="card my-account__profile">
         <div className="my-account__avatar">
-          <UserCircle size={56} strokeWidth={1.4} />
+          <UserCircle size={64} strokeWidth={1.3} />
         </div>
         <h2 className="my-account__name">{user?.name}</h2>
-        <p className="my-account__role">{user?.role}</p>
+        <span className="my-account__role-badge">{user?.role}</span>
+        <p className="my-account__company">{user?.company}</p>
+      </div>
 
+      <div className="card my-account__details">
+        <h3 className="section-title">Account Information</h3>
         <div className="my-account__fields">
           {fields.map(({ icon: Icon, label, value }) => (
             <div key={label} className="my-account__field">

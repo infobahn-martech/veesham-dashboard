@@ -1,54 +1,84 @@
 .my-account {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 20px;
+  align-items: start;
 }
 
-.my-account__card {
-  width: 100%;
-  max-width: 480px;
-  padding: 36px;
+.my-account__profile {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  padding: 36px 28px;
+  animation: fadeSlideIn var(--transition-base) both;
 }
 
 .my-account__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--color-info-bg);
   color: var(--color-primary);
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+  transition: transform var(--transition-base);
+}
+
+.my-account__profile:hover .my-account__avatar {
+  transform: scale(1.04);
 }
 
 .my-account__name {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--color-text);
 }
 
-.my-account__role {
-  margin-top: 2px;
+.my-account__role-badge {
+  margin-top: 8px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.my-account__company {
+  margin-top: 14px;
   font-size: 0.85rem;
   color: var(--color-text-muted);
 }
 
+.my-account__details {
+  padding: 28px 32px;
+  animation: fadeSlideIn var(--transition-base) both;
+  animation-delay: 80ms;
+}
+
 .my-account__fields {
-  width: 100%;
-  margin-top: 28px;
-  display: flex;
-  flex-direction: column;
+  margin-top: 4px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 4px;
-  text-align: left;
 }
 
 .my-account__field {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 14px 4px;
+  padding: 16px 4px;
   border-bottom: 1px solid var(--color-border);
+  transition: background-color var(--transition-fast);
 }
 
-.my-account__field:last-child {
-  border-bottom: none;
+.my-account__field:hover {
+  background: var(--color-bg);
 }
 
 .my-account__field-icon {
@@ -68,15 +98,33 @@
   font-size: 0.92rem;
   font-weight: 600;
   color: var(--color-text);
+  word-break: break-word;
 }
 
 .my-account__actions {
-  width: 100%;
   margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border);
   display: flex;
   gap: 12px;
 }
 
-.my-account__actions .btn {
-  flex: 1;
+@media (max-width: 900px) {
+  .my-account {
+    grid-template-columns: 1fr;
+  }
+
+  .my-account__fields {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .my-account__details {
+    padding: 22px 18px;
+  }
+
+  .my-account__actions {
+    flex-direction: column;
+  }
 }

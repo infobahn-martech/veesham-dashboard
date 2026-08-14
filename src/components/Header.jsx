@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { UserCircle } from "lucide-react";
+import { Menu, UserCircle } from "lucide-react";
 import { getCurrentUser } from "../utils/auth";
 import "./Header.css";
 
@@ -9,16 +9,26 @@ const PAGE_TITLES = {
   "/my-account": { title: "My Account", subtitle: "Manage your profile" },
 };
 
-function Header() {
+function Header({ onOpenMobileNav }) {
   const location = useLocation();
   const user = getCurrentUser();
   const page = PAGE_TITLES[location.pathname] || { title: "", subtitle: "" };
 
   return (
     <header className="header">
-      <div>
-        <h1 className="page-title">{page.title}</h1>
-        <p className="page-subtitle">{page.subtitle}</p>
+      <div className="header__title-group">
+        <button
+          type="button"
+          className="header__menu-btn"
+          onClick={onOpenMobileNav}
+          aria-label="Open navigation"
+        >
+          <Menu size={20} strokeWidth={2} />
+        </button>
+        <div>
+          <h1 className="page-title">{page.title}</h1>
+          <p className="page-subtitle">{page.subtitle}</p>
+        </div>
       </div>
 
       <div className="header__user">
@@ -26,7 +36,9 @@ function Header() {
           <span className="header__user-name">{user?.name}</span>
           <span className="header__user-role">{user?.role}</span>
         </div>
-        <UserCircle size={34} strokeWidth={1.5} color="var(--color-primary)" />
+        <div className="header__avatar">
+          <UserCircle size={22} strokeWidth={1.8} />
+        </div>
       </div>
     </header>
   );

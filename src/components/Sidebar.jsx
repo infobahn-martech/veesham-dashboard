@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Radio, UserCircle, LogOut, Printer } from "lucide-react";
+import { LayoutDashboard, Radio, UserCircle, LogOut, Printer, X } from "lucide-react";
+import clsx from "clsx";
 import { logout } from "../utils/auth";
 import "./Sidebar.css";
 
@@ -9,7 +10,7 @@ const NAV_ITEMS = [
   { to: "/my-account", label: "My Account", icon: UserCircle },
 ];
 
-function Sidebar() {
+function Sidebar({ isMobileNavOpen, onCloseMobileNav }) {
   const navigate = useNavigate();
 
   function handleLogout() {
@@ -18,12 +19,20 @@ function Sidebar() {
   }
 
   return (
-    <aside className="sidebar">
+    <aside className={clsx("sidebar", isMobileNavOpen && "sidebar--open")}>
       <div className="sidebar__brand">
         <div className="sidebar__logo">
           <Printer size={20} strokeWidth={2.2} />
         </div>
         <span className="sidebar__brand-name">Veesham</span>
+        <button
+          type="button"
+          className="sidebar__close"
+          onClick={onCloseMobileNav}
+          aria-label="Close navigation"
+        >
+          <X size={18} strokeWidth={2} />
+        </button>
       </div>
 
       <nav className="sidebar__nav">
@@ -32,7 +41,7 @@ function Sidebar() {
             key={to}
             to={to}
             className={({ isActive }) =>
-              `sidebar__link${isActive ? " sidebar__link--active" : ""}`
+              clsx("sidebar__link", isActive && "sidebar__link--active")
             }
           >
             <Icon size={18} strokeWidth={2} />

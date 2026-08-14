@@ -3,17 +3,34 @@
   flex-direction: column;
   gap: 18px;
   height: 100%;
+  min-height: calc(100vh - var(--header-height) - 56px);
 }
 
 .job-board__toolbar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
   gap: 14px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: 14px 18px;
   box-shadow: var(--shadow-sm);
+}
+
+.job-board__toolbar-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 260px;
+}
+
+.job-board__toolbar-status {
+  display: flex;
+  align-items: center;
+  gap: 18px;
 }
 
 .job-board__search {
@@ -26,6 +43,12 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   color: var(--color-text-muted);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.job-board__search:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.12);
 }
 
 .job-board__search input {
@@ -35,6 +58,7 @@
   font-size: 0.9rem;
   font-family: inherit;
   color: var(--color-text);
+  background: transparent;
 }
 
 .job-board__filter {
@@ -45,6 +69,8 @@
   font-family: inherit;
   color: var(--color-text);
   background: var(--color-surface);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
 }
 
 .job-board__toggle {
@@ -60,7 +86,11 @@
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.job-board__toggle:hover {
+  border-color: #c7ccd4;
 }
 
 .job-board__toggle--active {
@@ -69,21 +99,40 @@
   color: var(--color-info);
 }
 
+.job-board__live {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.job-board__live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-success);
+  animation: softPulse 1.6s ease-in-out infinite;
+}
+
 .job-board__clock {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  margin-left: auto;
-  padding-left: 14px;
 }
 
 .job-board__refresh {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 600;
-  color: var(--color-success);
+  color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -102,15 +151,37 @@
 }
 
 .job-board__time {
-  font-size: 1.35rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--color-primary);
   font-variant-numeric: tabular-nums;
+  line-height: 1.2;
 }
 
 .job-board__day {
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   color: var(--color-text-muted);
+}
+
+.job-board__tv-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.job-board__tv-btn:hover {
+  background: var(--color-bg);
+  border-color: #c7ccd4;
+  transform: scale(1.05);
 }
 
 .job-board__board-wrap {
@@ -124,7 +195,7 @@
 .job-board__table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 1.05rem;
+  font-size: 1.02rem;
 }
 
 .job-board__table thead th {
@@ -133,43 +204,116 @@
   background: var(--color-primary-dark);
   color: rgba(255, 255, 255, 0.6);
   text-align: left;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  padding: 16px 20px;
+  padding: 15px 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
   white-space: nowrap;
+  z-index: 1;
+}
+
+.job-board__table th.num,
+.job-board__table td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 .job-board__table tbody td {
-  padding: 16px 20px;
+  padding: 15px 20px;
   color: rgba(255, 255, 255, 0.92);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   white-space: nowrap;
 }
 
+.job-board__table tbody tr {
+  transition: background-color var(--transition-fast);
+  border-left: 3px solid transparent;
+}
+
+.job-board__table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
 .job-board__jobno {
   font-weight: 700;
   letter-spacing: 0.02em;
+  color: #7fb2f7;
 }
 
 .job-board__row--alert {
+  background: rgba(192, 50, 42, 0.1);
+  border-left-color: var(--color-danger);
+}
+
+.job-board__row--alert:hover {
   background: rgba(192, 50, 42, 0.16);
 }
 
 .job-board__empty {
   text-align: center;
   color: rgba(255, 255, 255, 0.6);
-  padding: 40px 20px;
+  padding: 48px 20px;
+}
+
+/* TV / kiosk mode — maximized, larger type for at-a-distance reading */
+.job-board--tv {
+  gap: 0;
+  min-height: 100vh;
+  padding: 18px;
+}
+
+.job-board--tv .job-board__toolbar {
+  margin-bottom: 14px;
+}
+
+.job-board--tv .job-board__table {
+  font-size: 1.2rem;
+}
+
+.job-board--tv .job-board__table thead th {
+  font-size: 0.85rem;
+  padding: 18px 22px;
+}
+
+.job-board--tv .job-board__table tbody td {
+  padding: 18px 22px;
+}
+
+@media (max-width: 1100px) {
+  .job-board__toolbar-status {
+    gap: 12px;
+  }
 }
 
 @media (max-width: 900px) {
   .job-board__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .job-board__toolbar-main {
     flex-wrap: wrap;
+    min-width: 0;
+  }
+
+  .job-board__toolbar-status {
+    justify-content: space-between;
   }
 
   .job-board__clock {
-    margin-left: 0;
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 560px) {
+  .job-board__toolbar-status {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .job-board__table {
+    font-size: 0.92rem;
   }
 }

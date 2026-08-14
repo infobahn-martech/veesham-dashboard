@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { Search, RefreshCw, CalendarCheck } from "lucide-react";
+import { useOutletContext } from "react-router-dom";
+import { Search, RefreshCw, CalendarCheck, Maximize, Minimize } from "lucide-react";
 import clsx from "clsx";
 import { jobs, STATUSES } from "../data/jobs";
 import StatusBadge from "../components/StatusBadge";
@@ -16,11 +17,13 @@ function formatDateTime(date) {
 }
 
 function LiveJobBoard() {
+  const { setIsChromeHidden } = useOutletContext();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [todayOnly, setTodayOnly] = useState(false);
   const [now, setNow] = useState(new Date());
   const [refreshing, setRefreshing] = useState(false);
+  const [isTvMode, setIsTvMode] = useState(false);
 
   useEffect(() => {
     const clockTimer = setInterval(() => setNow(new Date()), 1000);
@@ -34,6 +37,39 @@ function LiveJobBoard() {
     }, REFRESH_INTERVAL_MS);
     return () => clearInterval(refreshTimer);
   }, []);
+
+  useEffect(() => {
+    function handleFullscreenChange() {
+      if (!document.fullscreenElement) {
+        setIsTvMode(false);
+        setIsChromeHidden(false);
+      }
+    }
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, [setIsChromeHidden]);
+
+  useEffect(() => {
+    return () => setIsChromeHidden(false);
+  }, [setIsChromeHidden]);
+
+  async function toggleTvMode() {
+    if (!isTvMode) {
+      try {
+        await document.documentElement.requestFullscreen();
+      } catch {
+        // Fullscreen may be denied/unsupported — still switch to the maximized layout.
+      }
+      setIsTvMode(true);
+      setIsChromeHidden(true);
+    } else {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      }
+      setIsTvMode(false);
+      setIsChromeHidden(false);
+    }
+  }
 
   const filteredJobs = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -52,47 +88,66 @@ function LiveJobBoard() {
   const { time, day } = formatDateTime(now);
 
   return (
-    <div className="job-board">
+    <div className={clsx("job-board", isTvMode && "job-board--tv")}>
       <div className="job-board__toolbar">
-        <div className="job-board__search">
-          <Search size={18} strokeWidth={2} />
-          <input
-            type="text"
-            placeholder="Search job no, client or item..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+        <div className="job-board__toolbar-main">
+          <div className="job-board__search">
+            <Search size={18} strokeWidth={2} />
+            <input
+              type="text"
+              placeholder="Search job no, client or item..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+
+          <select
+            className="job-board__filter"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="All">All Statuses</option>
+            {STATUSES.map((status) => (
+              <option key={status} value={status}>
+                {status}
+              </option>
+            ))}
+          </select>
+
+          <button
+            type="button"
+            className={clsx("job-board__toggle", todayOnly && "job-board__toggle--active")}
+            onClick={() => setTodayOnly((v) => !v)}
+          >
+            <CalendarCheck size={16} strokeWidth={2} />
+            Today's Jobs
+          </button>
         </div>
 
-        <select
-          className="job-board__filter"
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-        >
-          <option value="All">All Statuses</option>
-          {STATUSES.map((status) => (
-            <option key={status} value={status}>
-              {status}
-            </option>
-          ))}
-        </select>
-
-        <button
-          type="button"
-          className={clsx("job-board__toggle", todayOnly && "job-board__toggle--active")}
-          onClick={() => setTodayOnly((v) => !v)}
-        >
-          <CalendarCheck size={16} strokeWidth={2} />
-          Today's Jobs
-        </button>
-
-        <div className="job-board__clock">
-          <div className="job-board__refresh">
-            <RefreshCw size={14} strokeWidth={2} className={clsx(refreshing && "job-board__refresh-icon--spin")} />
-            <span>Auto-refresh</span>
+        <div className="job-board__toolbar-status">
+          <div className="job-board__live">
+            <span className="job-board__live-dot" />
+            LIVE
           </div>
-          <div className="job-board__time">{time}</div>
-          <div className="job-board__day">{day}</div>
+
+          <div className="job-board__clock">
+            <div className="job-board__refresh">
+              <RefreshCw size={13} strokeWidth={2} className={clsx(refreshing && "job-board__refresh-icon--spin")} />
+              <span>Auto-refresh</span>
+            </div>
+            <div className="job-board__time">{time}</div>
+            <div className="job-board__day">{day}</div>
+          </div>
+
+          <button
+            type="button"
+            className="job-board__tv-btn"
+            onClick={toggleTvMode}
+            aria-label={isTvMode ? "Exit TV mode" : "Enter TV mode"}
+            title={isTvMode ? "Exit TV mode" : "Enter TV mode"}
+          >
+            {isTvMode ? <Minimize size={18} strokeWidth={2} /> : <Maximize size={18} strokeWidth={2} />}
+          </button>
         </div>
       </div>
 
@@ -103,9 +158,9 @@ function LiveJobBoard() {
               <th>Job No.</th>
               <th>Client</th>
               <th>Item</th>
-              <th>Total Qty</th>
-              <th>Delivered</th>
-              <th>Balance</th>
+              <th className="num">Total Qty</th>
+              <th className="num">Delivered</th>
+              <th className="num">Balance</th>
               <th>Delivery Date</th>
               <th>Status</th>
             </tr>
@@ -121,10 +176,16 @@ function LiveJobBoard() {
                 <td className="job-board__jobno">{job.jobNo}</td>
                 <td>{job.client}</td>
                 <td>{job.item}</td>
-                <td>{job.totalQty.toLocaleString()}</td>
-                <td>{job.deliveredQty.toLocaleString()}</td>
-                <td>{job.balanceQty.toLocaleString()}</td>
-                <td>{job.deliveryDate}</td>
+                <td className="num">{job.totalQty.toLocaleString()}</td>
+                <td className="num">{job.deliveredQty.toLocaleString()}</td>
+                <td className="num">{job.balanceQty.toLocaleString()}</td>
+                <td>
+                  {new Date(job.deliveryDate).toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </td>
                 <td>
                   <StatusBadge status={job.status} />
                 </td>
