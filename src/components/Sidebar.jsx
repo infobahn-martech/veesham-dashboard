@@ -24,7 +24,10 @@ function Sidebar({ isMobileNavOpen, onCloseMobileNav }) {
         <div className="sidebar__logo">
           <Printer size={20} strokeWidth={2.2} />
         </div>
-        <span className="sidebar__brand-name">Veesham</span>
+        <div className="sidebar__brand-text">
+          <span className="sidebar__brand-name">Veesham</span>
+          <span className="sidebar__brand-subtitle">Production systems</span>
+        </div>
         <button
           type="button"
           className="sidebar__close"
@@ -34,6 +37,8 @@ function Sidebar({ isMobileNavOpen, onCloseMobileNav }) {
           <X size={18} strokeWidth={2} />
         </button>
       </div>
+
+      <span className="sidebar__section-label">Main</span>
 
       <nav className="sidebar__nav">
         {NAV_ITEMS.map(({ to, label, icon: Icon }) => (

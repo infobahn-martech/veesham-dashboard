@@ -1,13 +1,13 @@
 .dashboard {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
 }
 
 .dashboard__stats {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 16px;
+  gap: 14px;
 }
 
 .dashboard__stats .stat-card {
@@ -35,12 +35,12 @@
 
 .dashboard__charts {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 14px;
 }
 
 .dashboard__chart-card {
-  padding: 22px 24px;
+  padding: 20px 22px;
   animation: fadeSlideIn var(--transition-base) both;
   animation-delay: 120ms;
 }
@@ -58,14 +58,48 @@
 }
 
 .dashboard__chart-subtitle {
-  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
   color: var(--color-text-muted);
 }
 
 .dashboard__pie-layout {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+}
+
+.dashboard__pie-wrap {
+  position: relative;
+  width: 45%;
+  flex-shrink: 0;
+}
+
+.dashboard__pie-total {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.dashboard__pie-total-value {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.1;
+}
+
+.dashboard__pie-total-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
 }
 
 .dashboard__legend {
@@ -76,14 +110,14 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 9px;
 }
 
 .dashboard__legend li {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: var(--color-text);
 }
 
@@ -104,6 +138,7 @@
 }
 
 .dashboard__legend-count {
+  font-family: var(--font-mono);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
@@ -114,28 +149,62 @@
     align-items: stretch;
   }
 
-  .dashboard__pie-layout .recharts-responsive-container {
-    width: 100% !important;
+  .dashboard__pie-wrap {
+    width: 100%;
   }
 }
 
 .dashboard__table-card {
-  padding: 22px 24px;
+  padding: 20px 22px;
   animation: fadeSlideIn var(--transition-base) both;
   animation-delay: 160ms;
 }
 
 .dashboard__table-wrap {
   overflow-x: auto;
+  margin-top: 10px;
 }
 
 .dashboard__table-wrap .data-table {
   min-width: 640px;
 }
 
+.dashboard__table th {
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
+}
+
 .dashboard__jobno {
+  font-family: var(--font-mono);
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--color-text);
+}
+
+.dashboard__date {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.dashboard__client {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dashboard__client-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: var(--amber-light);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  flex-shrink: 0;
 }
 
 @media (max-width: 1200px) {
@@ -144,20 +213,20 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .dashboard__charts {
     grid-template-columns: 1fr;
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .dashboard__stats {
     grid-template-columns: repeat(2, 1fr);
   }
 
   .dashboard__chart-card,
   .dashboard__table-card {
-    padding: 18px 16px;
+    padding: 16px 16px;
   }
 }
 

@@ -5,8 +5,8 @@ import {
   Cell,
   BarChart,
   Bar,
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -22,22 +22,13 @@ import {
   PauseCircle,
 } from "lucide-react";
 import { jobs } from "../data/jobs";
+import { STATUS_STYLES, DEFAULT_STATUS_STYLE } from "../data/statusStyles";
 import StatCard from "../components/StatCard";
 import StatusBadge from "../components/StatusBadge";
 import "./Dashboard.css";
 
-const STATUS_COLORS = {
-  Pending: "#52606d",
-  "In Progress": "#2f80ed",
-  "Partially Delivered": "#6b46c1",
-  Completed: "#12875b",
-  Delayed: "#c0322a",
-  Hold: "#b5720a",
-  WFA: "#e0a800",
-  Reprint: "#d1495b",
-};
-
 const todayStr = new Date().toISOString().slice(0, 10);
+const currentMonthKey = todayStr.slice(0, 7);
 
 const TOOLTIP_STYLE = {
   contentStyle: {
@@ -47,8 +38,18 @@ const TOOLTIP_STYLE = {
     fontSize: 13,
   },
   labelStyle: { fontWeight: 600, color: "#1b2430" },
-  cursor: { fill: "rgba(47, 128, 237, 0.06)" },
+  cursor: { fill: "rgba(216, 155, 43, 0.06)" },
 };
+
+function statusColor(status) {
+  return (STATUS_STYLES[status] || DEFAULT_STATUS_STYLE).color;
+}
+
+function clientInitials(name) {
+  if (!name) return "";
+  const words = name.trim().split(/\s+/);
+  return words.length > 1 ? `${words[0][0]}${words[1][0]}`.toUpperCase() : words[0].slice(0, 2).toUpperCase();
+}
 
 function Dashboard() {
   const stats = useMemo(() => {
@@ -62,6 +63,16 @@ function Dashboard() {
     const onHold = jobs.filter((j) => j.status === "Hold").length;
     return { total, active, dueToday, completed, delayed, onHold };
   }, []);
+
+  const completedThisMonth = useMemo(
+    () => jobs.filter((j) => j.status === "Completed" && j.deliveryDate.startsWith(currentMonthKey)).length,
+    []
+  );
+
+  const dueTodayUrgent = useMemo(
+    () => jobs.filter((j) => j.deliveryDate === todayStr && j.status !== "Completed").length,
+    []
+  );
 
   const statusDistribution = useMemo(() => {
     const counts = {};
@@ -110,12 +121,32 @@ function Dashboard() {
   return (
     <div className="dashboard">
       <div className="dashboard__stats">
-        <StatCard icon={Briefcase} label="Total Jobs" value={stats.total} variant="primary" />
-        <StatCard icon={Activity} label="Active Jobs" value={stats.active} variant="primary" />
-        <StatCard icon={CalendarClock} label="Due Today" value={stats.dueToday} variant="warning" />
-        <StatCard icon={CheckCircle2} label="Completed" value={stats.completed} variant="success" />
-        <StatCard icon={AlertTriangle} label="Delayed" value={stats.delayed} variant="danger" />
-        <StatCard icon={PauseCircle} label="On Hold" value={stats.onHold} variant="neutral" />
+        <StatCard icon={Briefcase} label="Total Jobs" value={stats.total} variant="amber" />
+        <StatCard icon={Activity} label="Active Jobs" value={stats.active} variant="cyan" />
+        <StatCard
+          icon={CalendarClock}
+          label="Due Today"
+          value={stats.dueToday}
+          variant="amber-soft"
+          meta={
+            dueTodayUrgent > 0
+              ? { text: `${dueTodayUrgent} urgent`, tone: "urgent" }
+              : undefined
+          }
+        />
+        <StatCard
+          icon={CheckCircle2}
+          label="Completed"
+          value={stats.completed}
+          variant="green"
+          meta={
+            completedThisMonth > 0
+              ? { text: `+${completedThisMonth} this month`, tone: "positive" }
+              : undefined
+          }
+        />
+        <StatCard icon={AlertTriangle} label="Delayed" value={stats.delayed} variant="coral" />
+        <StatCard icon={PauseCircle} label="On Hold" value={stats.onHold} variant="slate" />
       </div>
 
       <div className="dashboard__charts">
@@ -124,28 +155,34 @@ function Dashboard() {
             <h2 className="section-title">Job Status Distribution</h2>
           </div>
           <div className="dashboard__pie-layout">
-            <ResponsiveContainer width="60%" height={220}>
-              <PieChart>
-                <Pie
-                  data={statusDistribution}
-                  dataKey="count"
-                  nameKey="status"
-                  innerRadius={58}
-                  outerRadius={88}
-                  paddingAngle={3}
-                  animationDuration={700}
-                >
-                  {statusDistribution.map((entry) => (
-                    <Cell key={entry.status} fill={STATUS_COLORS[entry.status]} stroke="none" />
-                  ))}
-                </Pie>
-                <Tooltip {...TOOLTIP_STYLE} />
-              </PieChart>
-            </ResponsiveContainer>
+            <div className="dashboard__pie-wrap">
+              <ResponsiveContainer width="100%" height={200}>
+                <PieChart>
+                  <Pie
+                    data={statusDistribution}
+                    dataKey="count"
+                    nameKey="status"
+                    innerRadius={54}
+                    outerRadius={80}
+                    paddingAngle={3}
+                    animationDuration={700}
+                  >
+                    {statusDistribution.map((entry) => (
+                      <Cell key={entry.status} fill={statusColor(entry.status)} stroke="none" />
+                    ))}
+                  </Pie>
+                  <Tooltip {...TOOLTIP_STYLE} />
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="dashboard__pie-total" aria-hidden="true">
+                <span className="dashboard__pie-total-value">{stats.total}</span>
+                <span className="dashboard__pie-total-label">Total</span>
+              </div>
+            </div>
             <ul className="dashboard__legend">
               {statusDistribution.map(({ status, count }) => (
                 <li key={status}>
-                  <span className="dashboard__legend-dot" style={{ background: STATUS_COLORS[status] }} />
+                  <span className="dashboard__legend-dot" style={{ background: statusColor(status) }} />
                   <span className="dashboard__legend-label">{status}</span>
                   <span className="dashboard__legend-count">{count}</span>
                 </li>
@@ -157,14 +194,22 @@ function Dashboard() {
         <div className="card dashboard__chart-card">
           <div className="dashboard__chart-header">
             <h2 className="section-title">Jobs by Salesperson</h2>
+            <span className="dashboard__chart-subtitle">This month</span>
           </div>
           <ResponsiveContainer width="100%" height={240}>
-            <BarChart data={bySalesperson} barCategoryGap="28%">
+            <BarChart data={bySalesperson} barCategoryGap="32%">
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e6ec" vertical={false} />
-              <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#667085" }} axisLine={{ stroke: "#e2e6ec" }} tickLine={false} />
-              <YAxis allowDecimals={false} tick={{ fontSize: 12, fill: "#667085" }} axisLine={false} tickLine={false} />
+              <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#69758a" }} axisLine={{ stroke: "#e2e6ec" }} tickLine={false} />
+              <YAxis hide allowDecimals={false} />
               <Tooltip {...TOOLTIP_STYLE} />
-              <Bar dataKey="jobs" fill="#2f80ed" radius={[6, 6, 0, 0]} maxBarSize={44} animationDuration={700} />
+              <Bar
+                dataKey="jobs"
+                fill="#d89b2b"
+                radius={[6, 6, 0, 0]}
+                maxBarSize={36}
+                animationDuration={700}
+                label={{ position: "top", fontSize: 12, fontWeight: 700, fill: "#1b2430" }}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -175,29 +220,41 @@ function Dashboard() {
             <span className="dashboard__chart-subtitle">Delivered quantity by date</span>
           </div>
           <ResponsiveContainer width="100%" height={180}>
-            <LineChart data={deliveryTrend} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+            <AreaChart data={deliveryTrend} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+              <defs>
+                <linearGradient id="deliveryFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#d89b2b" stopOpacity={0.28} />
+                  <stop offset="100%" stopColor="#d89b2b" stopOpacity={0} />
+                </linearGradient>
+              </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e6ec" vertical={false} />
-              <XAxis dataKey="date" tick={{ fontSize: 12, fill: "#667085" }} axisLine={{ stroke: "#e2e6ec" }} tickLine={false} />
-              <YAxis tick={{ fontSize: 12, fill: "#667085" }} axisLine={false} tickLine={false} width={44} />
+              <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#69758a" }} axisLine={{ stroke: "#e2e6ec" }} tickLine={false} />
+              <YAxis tick={{ fontSize: 12, fill: "#69758a" }} axisLine={false} tickLine={false} width={44} />
               <Tooltip {...TOOLTIP_STYLE} />
-              <Line
+              <Area
                 type="monotone"
                 dataKey="deliveredQty"
-                stroke="#1e3a5f"
+                stroke="#111827"
                 strokeWidth={2.5}
-                dot={{ r: 3, fill: "#1e3a5f", strokeWidth: 0 }}
-                activeDot={{ r: 5 }}
+                fill="url(#deliveryFill)"
+                dot={{ r: 3, fill: "#ffffff", stroke: "#d89b2b", strokeWidth: 2 }}
+                activeDot={{ r: 5, fill: "#d89b2b", stroke: "#111827", strokeWidth: 1.5 }}
                 animationDuration={700}
               />
-            </LineChart>
+            </AreaChart>
           </ResponsiveContainer>
         </div>
       </div>
 
       <div className="card dashboard__table-card">
-        <h2 className="section-title">Priority Jobs</h2>
+        <div className="dashboard__chart-header">
+          <h2 className="section-title">Priority Jobs</h2>
+          <span className="dashboard__chart-subtitle">
+            {priorityJobs.length} of {jobs.length}
+          </span>
+        </div>
         <div className="dashboard__table-wrap">
-          <table className="data-table">
+          <table className="data-table dashboard__table">
             <thead>
               <tr>
                 <th>Job No.</th>
@@ -212,10 +269,15 @@ function Dashboard() {
               {priorityJobs.map((job) => (
                 <tr key={job.id}>
                   <td className="dashboard__jobno">{job.jobNo}</td>
-                  <td>{job.client}</td>
+                  <td>
+                    <div className="dashboard__client">
+                      <span className="dashboard__client-avatar">{clientInitials(job.client)}</span>
+                      <span>{job.client}</span>
+                    </div>
+                  </td>
                   <td>{job.item}</td>
                   <td className="num">{job.balanceQty.toLocaleString()}</td>
-                  <td>
+                  <td className="dashboard__date">
                     {new Date(job.deliveryDate).toLocaleDateString("en-GB", {
                       day: "2-digit",
                       month: "short",

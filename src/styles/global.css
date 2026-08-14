@@ -33,11 +33,22 @@
   --shadow-md: 0 4px 12px rgba(16, 24, 40, 0.08);
   --shadow-lg: 0 12px 32px rgba(16, 24, 40, 0.12);
 
-  --sidebar-width: 248px;
+  --sidebar-width: 210px;
   --sidebar-width-collapsed: 76px;
   --header-height: 64px;
 
   --font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  --navy: #080d17;
+  --navy-surface: #111a2b;
+  --navy-surface-hover: #162036;
+  --navy-border: #26334b;
+
+  --amber: #d89b2b;
+  --amber-light: #f0c66e;
+  --amber-soft: rgba(216, 155, 43, 0.1);
 
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
   --transition-fast: 150ms var(--ease);

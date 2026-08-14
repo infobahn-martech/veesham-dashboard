@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { Menu, UserCircle } from "lucide-react";
+import { Menu, Search, Bell } from "lucide-react";
 import { getCurrentUser } from "../utils/auth";
 import "./Header.css";
 
@@ -8,6 +8,14 @@ const PAGE_TITLES = {
   "/live-job-board": { title: "Live Job Status Board", subtitle: "Real-time job tracking" },
   "/my-account": { title: "My Account", subtitle: "Manage your profile" },
 };
+
+function initialsOf(name) {
+  if (!name) return "";
+  const parts = name.trim().split(/\s+/);
+  return parts.length > 1
+    ? `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase()
+    : parts[0].slice(0, 2).toUpperCase();
+}
 
 function Header({ onOpenMobileNav }) {
   const location = useLocation();
@@ -26,18 +34,34 @@ function Header({ onOpenMobileNav }) {
           <Menu size={20} strokeWidth={2} />
         </button>
         <div>
+          <div className="header__micro-row" aria-hidden="true">
+            <span className="header__micro-label">Production overview</span>
+            <span className="header__cmyk">
+              <span className="header__cmyk-dot header__cmyk-dot--c" />
+              <span className="header__cmyk-dot header__cmyk-dot--m" />
+              <span className="header__cmyk-dot header__cmyk-dot--y" />
+              <span className="header__cmyk-dot header__cmyk-dot--k" />
+            </span>
+          </div>
           <h1 className="page-title">{page.title}</h1>
           <p className="page-subtitle">{page.subtitle}</p>
         </div>
       </div>
 
-      <div className="header__user">
-        <div className="header__user-info">
-          <span className="header__user-name">{user?.name}</span>
-          <span className="header__user-role">{user?.role}</span>
-        </div>
-        <div className="header__avatar">
-          <UserCircle size={22} strokeWidth={1.8} />
+      <div className="header__actions">
+        <button type="button" className="header__icon-btn" aria-label="Search">
+          <Search size={17} strokeWidth={2} />
+        </button>
+        <button type="button" className="header__icon-btn" aria-label="Notifications">
+          <Bell size={17} strokeWidth={2} />
+        </button>
+
+        <div className="header__user">
+          <div className="header__avatar">{initialsOf(user?.name)}</div>
+          <div className="header__user-info">
+            <span className="header__user-name">{user?.name}</span>
+            <span className="header__user-role">{user?.role}</span>
+          </div>
         </div>
       </div>
     </header>

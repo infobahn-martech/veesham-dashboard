@@ -1,19 +1,13 @@
+import { STATUS_STYLES, DEFAULT_STATUS_STYLE } from "../data/statusStyles";
 import "./StatusBadge.css";
 
-const STATUS_STYLES = {
-  Pending: "neutral",
-  "In Progress": "info",
-  "Partially Delivered": "purple",
-  Completed: "success",
-  Delayed: "danger",
-  Hold: "warning",
-  WFA: "warning",
-  Reprint: "danger",
-};
-
 function StatusBadge({ status }) {
-  const variant = STATUS_STYLES[status] || "neutral";
-  return <span className={`status-badge status-badge--${variant}`}>{status}</span>;
+  const { color, bg } = STATUS_STYLES[status] || DEFAULT_STATUS_STYLE;
+  return (
+    <span className="status-badge" style={{ color, background: bg }}>
+      {status}
+    </span>
+  );
 }
 
 export default StatusBadge;
