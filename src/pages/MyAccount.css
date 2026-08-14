@@ -1,0 +1,82 @@
+.my-account {
+  display: flex;
+  justify-content: center;
+}
+
+.my-account__card {
+  width: 100%;
+  max-width: 480px;
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.my-account__avatar {
+  color: var(--color-primary);
+  margin-bottom: 12px;
+}
+
+.my-account__name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.my-account__role {
+  margin-top: 2px;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.my-account__fields {
+  width: 100%;
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+.my-account__field {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.my-account__field:last-child {
+  border-bottom: none;
+}
+
+.my-account__field-icon {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.my-account__field-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+.my-account__field-value {
+  margin-top: 2px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.my-account__actions {
+  width: 100%;
+  margin-top: 28px;
+  display: flex;
+  gap: 12px;
+}
+
+.my-account__actions .btn {
+  flex: 1;
+}

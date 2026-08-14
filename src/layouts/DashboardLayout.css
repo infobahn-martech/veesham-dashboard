@@ -1,0 +1,49 @@
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.dashboard-layout__main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-layout__content {
+  flex: 1;
+  padding: 28px;
+}
+
+@media (max-width: 900px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+
+  .dashboard-layout .sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 14px;
+  }
+
+  .dashboard-layout .sidebar__brand {
+    padding: 0 14px 0 0;
+  }
+
+  .dashboard-layout .sidebar__nav {
+    flex-direction: row;
+    flex: 1;
+  }
+
+  .dashboard-layout .sidebar__link span,
+  .dashboard-layout .sidebar__logout span {
+    display: none;
+  }
+
+  .dashboard-layout__content {
+    padding: 18px;
+  }
+}
