@@ -70,13 +70,6 @@ function UserManagement() {
 
   return (
     <div className="users-page">
-      <div className="users-page__stats">
-        <StatCard icon={UsersIcon} label="Total Users" value={stats.total} variant="amber" />
-        <StatCard icon={UserCheck} label="Active Users" value={stats.active} variant="green" />
-        <StatCard icon={UserX} label="Inactive Users" value={stats.inactive} variant="slate" />
-        <StatCard icon={ShieldCheck} label="Administrators" value={stats.admins} variant="cyan" />
-      </div>
-
       <div className="users-toolbar">
         <div className="users-toolbar__main">
           <div className="users-search">
