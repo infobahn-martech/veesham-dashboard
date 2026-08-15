@@ -30,6 +30,12 @@ import "./Dashboard.css";
 
 const todayStr = new Date().toISOString().slice(0, 10);
 const currentMonthKey = todayStr.slice(0, 7);
+const previousMonthKey = (() => {
+  const d = new Date();
+  d.setDate(1);
+  d.setMonth(d.getMonth() - 1);
+  return d.toISOString().slice(0, 7);
+})();
 
 const TOOLTIP_STYLE = {
   contentStyle: {
@@ -66,6 +72,24 @@ function Dashboard() {
     () => jobs.filter((j) => j.status === "Completed" && j.deliveryDate.startsWith(currentMonthKey)).length,
     [jobs]
   );
+
+  const completedLastMonth = useMemo(
+    () => jobs.filter((j) => j.status === "Completed" && j.deliveryDate.startsWith(previousMonthKey)).length,
+    [jobs]
+  );
+
+  const completedTrend = useMemo(() => {
+    if (completedLastMonth === 0) {
+      if (completedThisMonth === 0) return { text: "— 0% vs last month", tone: "neutral" };
+      return { text: "↑ New vs last month", tone: "positive" };
+    }
+    const change = Math.round(
+      ((completedThisMonth - completedLastMonth) / completedLastMonth) * 100
+    );
+    if (change > 0) return { text: `↑ ${change}% vs last month`, tone: "positive" };
+    if (change < 0) return { text: `↓ ${Math.abs(change)}% vs last month`, tone: "negative" };
+    return { text: "— 0% vs last month", tone: "neutral" };
+  }, [completedThisMonth, completedLastMonth]);
 
   const dueTodayUrgent = useMemo(
     () => jobs.filter((j) => j.deliveryDate === todayStr && j.status !== "Completed").length,
@@ -137,11 +161,7 @@ function Dashboard() {
           label="Completed"
           value={stats.completed}
           variant="green"
-          meta={
-            completedThisMonth > 0
-              ? { text: `+${completedThisMonth} this month`, tone: "positive" }
-              : undefined
-          }
+          meta={completedTrend}
         />
         <StatCard icon={AlertTriangle} label="Delayed" value={stats.delayed} variant="coral" />
         <StatCard icon={PauseCircle} label="On Hold" value={stats.onHold} variant="slate" />

@@ -82,7 +82,8 @@
   color: #1e8a5f;
 }
 
-.stat-card__meta--urgent {
+.stat-card__meta--urgent,
+.stat-card__meta--negative {
   color: #d1495b;
 }
 
