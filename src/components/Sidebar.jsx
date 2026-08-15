@@ -1,7 +1,8 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Radio, UserCircle, LogOut, Printer, X } from "lucide-react";
+import { LayoutDashboard, Radio, UserCircle, LogOut, X } from "lucide-react";
 import clsx from "clsx";
 import { logout } from "../utils/auth";
+import logo from "../assets/images/logo.png";
 import "./Sidebar.css";
 
 const NAV_ITEMS = [
@@ -22,7 +23,7 @@ function Sidebar({ isMobileNavOpen, onCloseMobileNav }) {
     <aside className={clsx("sidebar", isMobileNavOpen && "sidebar--open")}>
       <div className="sidebar__brand">
         <div className="sidebar__logo">
-          <Printer size={20} strokeWidth={2.2} />
+          <img src={logo} alt="Veesham" className="sidebar__logo-img" />
         </div>
         <div className="sidebar__brand-text">
           <span className="sidebar__brand-name">Veesham</span>

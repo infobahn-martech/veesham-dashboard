@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Printer, AlertCircle, Eye, EyeOff, Lock } from "lucide-react";
+import { AlertCircle, Eye, EyeOff, Lock } from "lucide-react";
 import { login } from "../utils/auth";
+import logo from "../assets/images/logo.png";
 import "./Login.css";
 
 const DEMO_EMAIL = "admin@veesham.com";
@@ -86,7 +87,7 @@ function Login() {
         <div className="login__form-wrap">
           <div className="login__form-header">
             <div className="login__logo">
-              <Printer size={20} strokeWidth={2.2} />
+              <img src={logo} alt="Veesham" className="login__logo-img" />
             </div>
             <h2 className="login__heading">Sign in</h2>
             <p className="login__subtitle">Enter your production dashboard credentials</p>
