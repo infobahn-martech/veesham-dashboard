@@ -13,7 +13,11 @@ import UserFormModal from "../components/UserFormModal";
 import UserViewModal from "../components/UserViewModal";
 import ResetPasswordModal from "../components/ResetPasswordModal";
 import ConfirmDialog from "../components/ConfirmDialog";
+import Pagination from "../components/Pagination";
 import "./UserManagement.css";
+import "../components/Pagination.css";
+
+const PAGE_SIZE = 10;
 
 function UserManagement() {
   const { users, setUserStatus } = useUsersData();
@@ -23,6 +27,7 @@ function UserManagement() {
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
+  const [page, setPage] = useState(1);
 
   const [formUser, setFormUser] = useState(undefined);
   const [viewUser, setViewUser] = useState(null);
@@ -50,6 +55,17 @@ function UserManagement() {
       return matchesSearch && matchesRole && matchesStatus;
     });
   }, [users, search, roleFilter, statusFilter]);
+
+  const filterKey = `${search}|${roleFilter}|${statusFilter}`;
+  const [lastFilterKey, setLastFilterKey] = useState(filterKey);
+  if (filterKey !== lastFilterKey) {
+    setLastFilterKey(filterKey);
+    setPage(1);
+  }
+
+  const totalPages = Math.max(1, Math.ceil(filteredUsers.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const pagedUsers = filteredUsers.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   function resetFilters() {
     setSearch("");
@@ -127,7 +143,7 @@ function UserManagement() {
               </tr>
             </thead>
             <tbody>
-              {filteredUsers.map((u) => {
+              {pagedUsers.map((u) => {
                 const isSelf = sessionUser?.email === u.email;
                 return (
                   <tr key={u.id}>
@@ -176,6 +192,7 @@ function UserManagement() {
             </tbody>
           </table>
         </div>
+        <Pagination page={currentPage} totalItems={filteredUsers.length} pageSize={PAGE_SIZE} onPageChange={setPage} />
       </div>
 
       {formUser !== undefined && <UserFormModal user={formUser} onClose={() => setFormUser(undefined)} />}

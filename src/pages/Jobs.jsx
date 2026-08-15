@@ -12,9 +12,12 @@ import JobFormModal from "../components/JobFormModal";
 import JobViewModal from "../components/JobViewModal";
 import JobStatusModal from "../components/JobStatusModal";
 import ConfirmDialog from "../components/ConfirmDialog";
+import Pagination from "../components/Pagination";
 import "./Jobs.css";
+import "../components/Pagination.css";
 
 const todayStr = new Date().toISOString().slice(0, 10);
+const PAGE_SIZE = 10;
 
 function Jobs() {
   const { jobs, archiveJob } = useJobsData();
@@ -26,6 +29,7 @@ function Jobs() {
   const [dateFilter, setDateFilter] = useState("");
   const [todayOnly, setTodayOnly] = useState(false);
   const [showArchived, setShowArchived] = useState(false);
+  const [page, setPage] = useState(1);
 
   const [formJob, setFormJob] = useState(undefined);
   const [viewJob, setViewJob] = useState(null);
@@ -58,6 +62,17 @@ function Jobs() {
       return matchesSearch && matchesStatus && matchesSalesperson && matchesDate && matchesToday;
     });
   }, [baseJobs, search, statusFilter, salespersonFilter, dateFilter, todayOnly]);
+
+  const filterKey = `${search}|${statusFilter}|${salespersonFilter}|${dateFilter}|${todayOnly}|${showArchived}`;
+  const [lastFilterKey, setLastFilterKey] = useState(filterKey);
+  if (filterKey !== lastFilterKey) {
+    setLastFilterKey(filterKey);
+    setPage(1);
+  }
+
+  const totalPages = Math.max(1, Math.ceil(filteredJobs.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const pagedJobs = filteredJobs.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   function resetFilters() {
     setSearch("");
@@ -162,7 +177,7 @@ function Jobs() {
               </tr>
             </thead>
             <tbody>
-              {filteredJobs.map((job) => (
+              {pagedJobs.map((job) => (
                 <tr key={job.id} className={clsx(job.status === "Delayed" && "jobs-table__row--alert", job.archived && "jobs-table__row--archived")}>
                   <td className="jobs-table__jobno">{job.jobNo}</td>
                   <td>
@@ -206,6 +221,7 @@ function Jobs() {
             </tbody>
           </table>
         </div>
+        <Pagination page={currentPage} totalItems={filteredJobs.length} pageSize={PAGE_SIZE} onPageChange={setPage} />
       </div>
 
       {formJob !== undefined && <JobFormModal job={formJob} onClose={() => setFormJob(undefined)} />}

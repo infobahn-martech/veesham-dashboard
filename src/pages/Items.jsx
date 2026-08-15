@@ -8,7 +8,11 @@ import { formatDate } from "../utils/format";
 import ActionMenu from "../components/ActionMenu";
 import ItemFormModal from "../components/ItemFormModal";
 import ItemViewModal from "../components/ItemViewModal";
+import Pagination from "../components/Pagination";
 import "./Items.css";
+import "../components/Pagination.css";
+
+const PAGE_SIZE = 10;
 
 function Items() {
   const { items, setItemStatus } = useJobsData();
@@ -19,6 +23,7 @@ function Items() {
   const [statusFilter, setStatusFilter] = useState("All");
   const [formItem, setFormItem] = useState(undefined); // undefined = closed, null = add, object = edit
   const [viewItem, setViewItem] = useState(null);
+  const [page, setPage] = useState(1);
 
   const hasActiveFilters = search.trim() !== "" || categoryFilter !== "All" || statusFilter !== "All";
 
@@ -35,6 +40,17 @@ function Items() {
       return matchesSearch && matchesCategory && matchesStatus;
     });
   }, [items, search, categoryFilter, statusFilter]);
+
+  const filterKey = `${search}|${categoryFilter}|${statusFilter}`;
+  const [lastFilterKey, setLastFilterKey] = useState(filterKey);
+  if (filterKey !== lastFilterKey) {
+    setLastFilterKey(filterKey);
+    setPage(1);
+  }
+
+  const totalPages = Math.max(1, Math.ceil(filteredItems.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const pagedItems = filteredItems.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   function resetFilters() {
     setSearch("");
@@ -107,7 +123,7 @@ function Items() {
               </tr>
             </thead>
             <tbody>
-              {filteredItems.map((item) => (
+              {pagedItems.map((item) => (
                 <tr key={item.id}>
                   <td className="items-table__code">{item.itemCode}</td>
                   <td>{item.itemName}</td>
@@ -144,6 +160,7 @@ function Items() {
             </tbody>
           </table>
         </div>
+        <Pagination page={currentPage} totalItems={filteredItems.length} pageSize={PAGE_SIZE} onPageChange={setPage} />
       </div>
 
       {formItem !== undefined && <ItemFormModal item={formItem} onClose={() => setFormItem(undefined)} />}
