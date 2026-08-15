@@ -21,7 +21,7 @@ import {
   AlertTriangle,
   PauseCircle,
 } from "lucide-react";
-import { jobs } from "../data/jobs";
+import { useJobsData } from "../context/jobsData";
 import { STATUS_STYLES, DEFAULT_STATUS_STYLE } from "../data/statusStyles";
 import { getInitials } from "../utils/initials";
 import StatCard from "../components/StatCard";
@@ -47,6 +47,9 @@ function statusColor(status) {
 }
 
 function Dashboard() {
+  const { jobs: allJobs } = useJobsData();
+  const jobs = useMemo(() => allJobs.filter((j) => !j.archived), [allJobs]);
+
   const stats = useMemo(() => {
     const total = jobs.length;
     const active = jobs.filter(
@@ -57,16 +60,16 @@ function Dashboard() {
     const delayed = jobs.filter((j) => j.status === "Delayed").length;
     const onHold = jobs.filter((j) => j.status === "Hold").length;
     return { total, active, dueToday, completed, delayed, onHold };
-  }, []);
+  }, [jobs]);
 
   const completedThisMonth = useMemo(
     () => jobs.filter((j) => j.status === "Completed" && j.deliveryDate.startsWith(currentMonthKey)).length,
-    []
+    [jobs]
   );
 
   const dueTodayUrgent = useMemo(
     () => jobs.filter((j) => j.deliveryDate === todayStr && j.status !== "Completed").length,
-    []
+    [jobs]
   );
 
   const statusDistribution = useMemo(() => {
@@ -75,7 +78,7 @@ function Dashboard() {
       counts[j.status] = (counts[j.status] || 0) + 1;
     });
     return Object.entries(counts).map(([status, count]) => ({ status, count }));
-  }, []);
+  }, [jobs]);
 
   const bySalesperson = useMemo(() => {
     const counts = {};
@@ -86,7 +89,7 @@ function Dashboard() {
       name: name.split(" ")[0],
       jobs: jobCount,
     }));
-  }, []);
+  }, [jobs]);
 
   const deliveryTrend = useMemo(() => {
     const byDate = {};
@@ -99,7 +102,7 @@ function Dashboard() {
         date: date.slice(5),
         deliveredQty,
       }));
-  }, []);
+  }, [jobs]);
 
   const priorityJobs = useMemo(() => {
     const priorityOrder = { Delayed: 0, Hold: 1, WFA: 2, "In Progress": 3, Pending: 4 };
@@ -111,7 +114,7 @@ function Dashboard() {
         return a.deliveryDate.localeCompare(b.deliveryDate);
       })
       .slice(0, 8);
-  }, []);
+  }, [jobs]);
 
   return (
     <div className="dashboard">

@@ -1,0 +1,224 @@
+.items-page {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.items-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.items-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  background: var(--color-surface);
+  border: 1px solid #e1e5eb;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.items-toolbar__main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.items-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 220px;
+  height: 42px;
+  padding: 0 14px;
+  background: #f8f9fb;
+  border: 1px solid #e0e5ec;
+  border-radius: 8px;
+  color: var(--color-text-muted);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.items-search:focus-within {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(216, 155, 43, 0.1);
+}
+
+.items-search input {
+  border: none;
+  outline: none;
+  flex: 1;
+  height: 100%;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: var(--color-text);
+  background: transparent;
+}
+
+.items-filter {
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid #e0e5ec;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-family: inherit;
+  color: var(--color-text);
+  background: #f8f9fb;
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.items-filter:focus-visible {
+  border-color: var(--amber);
+}
+
+.items-reset {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: 1px solid #e0e5ec;
+  background: #f8f9fb;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.items-reset:hover {
+  border-color: var(--amber);
+  background: var(--amber-soft);
+  color: #b5720a;
+}
+
+.items-table-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.items-table-wrap {
+  overflow: auto;
+}
+
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.items-table thead th {
+  position: sticky;
+  top: 0;
+  background: #fafbfc;
+  color: #718096;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 13px 18px;
+  border-bottom: 1px solid #e5e9ef;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.items-table__actions-col {
+  text-align: right;
+}
+
+.items-table tbody td {
+  padding: 13px 18px;
+  color: var(--color-text);
+  border-bottom: 1px solid #edf0f4;
+}
+
+.items-table tbody tr {
+  transition: background-color var(--transition-fast);
+}
+
+.items-table tbody tr:hover {
+  background: #fafbfc;
+}
+
+.items-table tbody td:last-child {
+  text-align: right;
+}
+
+.items-table__code {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: #111827;
+  white-space: nowrap;
+}
+
+.items-table__desc {
+  color: var(--color-text-muted);
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.items-table__date {
+  color: #374151;
+  white-space: nowrap;
+}
+
+.items-table__empty {
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: 48px 20px;
+}
+
+.item-status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.item-status-pill--active {
+  color: #1e8a5f;
+  background: rgba(30, 138, 95, 0.12);
+}
+
+.item-status-pill--inactive {
+  color: #64748b;
+  background: rgba(100, 116, 139, 0.12);
+}
+
+@media (max-width: 900px) {
+  .items-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .items-toolbar__main {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 560px) {
+  .items-page__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .items-table__desc {
+    max-width: 180px;
+  }
+}

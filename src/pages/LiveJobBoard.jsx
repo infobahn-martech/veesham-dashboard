@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Search, RefreshCw, CalendarCheck, Maximize, Minimize } from "lucide-react";
 import clsx from "clsx";
-import { jobs, STATUSES } from "../data/jobs";
+import { STATUSES } from "../data/jobs";
+import { useJobsData } from "../context/jobsData";
 import { getInitials } from "../utils/initials";
 import StatusBadge from "../components/StatusBadge";
 import "./LiveJobBoard.css";
@@ -20,6 +21,8 @@ function formatDateTime(date) {
 
 function LiveJobBoard() {
   const { setIsChromeHidden } = useOutletContext();
+  const { jobs: allJobs } = useJobsData();
+  const jobs = useMemo(() => allJobs.filter((j) => !j.archived), [allJobs]);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [todayOnly, setTodayOnly] = useState(false);
@@ -96,7 +99,7 @@ function LiveJobBoard() {
       const matchesToday = !todayOnly || job.deliveryDate === todayStr;
       return matchesSearch && matchesStatus && matchesToday;
     });
-  }, [search, statusFilter, todayOnly]);
+  }, [jobs, search, statusFilter, todayOnly]);
 
   const visibleJobs = filteredJobs.slice(0, visibleCount);
   const hasMore = visibleCount < filteredJobs.length;

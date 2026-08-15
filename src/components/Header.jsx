@@ -10,6 +10,16 @@ const PAGE_TITLES = {
     title: "Dashboard",
     subtitle: "Overview of all production jobs",
   },
+  "/job-management/items": {
+    micro: "Job management",
+    title: "Items",
+    subtitle: "Manage production items and product master data",
+  },
+  "/job-management/jobs": {
+    micro: "Job management",
+    title: "Jobs",
+    subtitle: "Manage production jobs, quantities, delivery dates and statuses",
+  },
   "/live-job-board": {
     micro: "Real-time tracking",
     title: "Live Job Status Board",
