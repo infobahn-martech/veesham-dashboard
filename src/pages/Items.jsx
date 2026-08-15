@@ -5,7 +5,6 @@ import { useJobsData } from "../context/jobsData";
 import { useToast } from "../context/toast";
 import { CATEGORIES } from "../data/items";
 import { formatDate } from "../utils/format";
-import CounterBar from "../components/CounterBar";
 import ActionMenu from "../components/ActionMenu";
 import ItemFormModal from "../components/ItemFormModal";
 import ItemViewModal from "../components/ItemViewModal";
@@ -22,17 +21,6 @@ function Items() {
   const [viewItem, setViewItem] = useState(null);
 
   const hasActiveFilters = search.trim() !== "" || categoryFilter !== "All" || statusFilter !== "All";
-
-  const counters = useMemo(() => {
-    const active = items.filter((i) => i.status === "Active").length;
-    const categories = new Set(items.map((i) => i.category)).size;
-    return [
-      { label: "Total Items", value: items.length },
-      { label: "Active Items", value: active, tone: "positive" },
-      { label: "Inactive Items", value: items.length - active },
-      { label: "Categories", value: categories, tone: "amber" },
-    ];
-  }, [items]);
 
   const filteredItems = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -62,15 +50,6 @@ function Items() {
 
   return (
     <div className="items-page">
-      <div className="items-page__header">
-        <button type="button" className="btn btn-primary" onClick={() => setFormItem(null)}>
-          <Plus size={16} strokeWidth={2.2} />
-          Add Item
-        </button>
-      </div>
-
-      <CounterBar items={counters} />
-
       <div className="items-toolbar">
         <div className="items-toolbar__main">
           <div className="items-search">
@@ -106,6 +85,11 @@ function Items() {
             </button>
           )}
         </div>
+
+        <button type="button" className="btn btn-primary" onClick={() => setFormItem(null)}>
+          <Plus size={16} strokeWidth={2.2} />
+          Add Item
+        </button>
       </div>
 
       <div className="card items-table-card">

@@ -4,16 +4,11 @@
   gap: 14px;
 }
 
-.items-page__header {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
 .items-toolbar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
   gap: 14px;
   background: var(--color-surface);
   border: 1px solid #e1e5eb;
@@ -213,11 +208,6 @@
 }
 
 @media (max-width: 560px) {
-  .items-page__header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
   .items-table__desc {
     max-width: 180px;
   }

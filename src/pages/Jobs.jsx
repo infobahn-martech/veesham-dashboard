@@ -6,7 +6,6 @@ import { useToast } from "../context/toast";
 import { STATUSES } from "../data/jobs";
 import { formatDate, formatNumber } from "../utils/format";
 import { getInitials } from "../utils/initials";
-import CounterBar from "../components/CounterBar";
 import ActionMenu from "../components/ActionMenu";
 import StatusBadge from "../components/StatusBadge";
 import JobFormModal from "../components/JobFormModal";
@@ -39,17 +38,6 @@ function Jobs() {
   );
 
   const baseJobs = useMemo(() => jobs.filter((j) => (showArchived ? true : !j.archived)), [jobs, showArchived]);
-
-  const counters = useMemo(() => {
-    const active = baseJobs.filter((j) => !j.archived);
-    return [
-      { label: "Total Jobs", value: active.length },
-      { label: "Active Jobs", value: active.filter((j) => j.status === "In Progress" || j.status === "Partially Delivered").length, tone: "positive" },
-      { label: "Due Today", value: active.filter((j) => j.deliveryDate === todayStr).length, tone: "amber" },
-      { label: "Delayed", value: active.filter((j) => j.status === "Delayed").length, tone: "urgent" },
-      { label: "Completed", value: active.filter((j) => j.status === "Completed").length },
-    ];
-  }, [baseJobs]);
 
   const hasActiveFilters =
     search.trim() !== "" || statusFilter !== "All" || salespersonFilter !== "All" || dateFilter !== "" || todayOnly;
@@ -87,15 +75,6 @@ function Jobs() {
 
   return (
     <div className="jobs-page">
-      <div className="jobs-page__header">
-        <button type="button" className="btn btn-primary" onClick={() => setFormJob(null)}>
-          <Plus size={16} strokeWidth={2.2} />
-          Create Job
-        </button>
-      </div>
-
-      <CounterBar items={counters} />
-
       <div className="jobs-toolbar">
         <div className="jobs-toolbar__main">
           <div className="jobs-search">
@@ -152,10 +131,17 @@ function Jobs() {
           )}
         </div>
 
-        <label className="jobs-archived-toggle">
-          <input type="checkbox" checked={showArchived} onChange={(e) => setShowArchived(e.target.checked)} />
-          <span>Show archived</span>
-        </label>
+        <div className="jobs-toolbar__side">
+          <label className="jobs-archived-toggle">
+            <input type="checkbox" checked={showArchived} onChange={(e) => setShowArchived(e.target.checked)} />
+            <span>Show archived</span>
+          </label>
+
+          <button type="button" className="btn btn-primary" onClick={() => setFormJob(null)}>
+            <Plus size={16} strokeWidth={2.2} />
+            Create Job
+          </button>
+        </div>
       </div>
 
       <div className="card jobs-table-card">
