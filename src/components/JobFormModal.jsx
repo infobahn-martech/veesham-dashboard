@@ -100,88 +100,69 @@ function JobFormModal({ job, onClose }) {
       }
     >
       <form id="job-form" onSubmit={handleSubmit} noValidate>
-        <div className="form-section">
-          <p className="form-section__title">Basic Information</p>
-          <div className="form-grid">
-            <div className={clsx("form-field", errors.jobNo && "form-field--error")}>
-              <label htmlFor="jobNo">Job No.</label>
-              <input id="jobNo" type="text" value={form.jobNo} onChange={(e) => update("jobNo", e.target.value)} placeholder="JB-2421" />
-              {errors.jobNo && <span className="form-field__error">{errors.jobNo}</span>}
-            </div>
-            <div className={clsx("form-field", errors.client && "form-field--error")}>
-              <label htmlFor="client">Client</label>
-              <input id="client" type="text" value={form.client} onChange={(e) => update("client", e.target.value)} placeholder="Client name" />
-              {errors.client && <span className="form-field__error">{errors.client}</span>}
-            </div>
-            <div className={clsx("form-field", errors.salesperson && "form-field--error")}>
-              <label htmlFor="salesperson">Salesperson</label>
-              <input id="salesperson" type="text" value={form.salesperson} onChange={(e) => update("salesperson", e.target.value)} placeholder="Salesperson name" />
-              {errors.salesperson && <span className="form-field__error">{errors.salesperson}</span>}
-            </div>
+        <div className="form-grid">
+          <div className={clsx("form-field", errors.jobNo && "form-field--error")}>
+            <label htmlFor="jobNo">Job No.</label>
+            <input id="jobNo" type="text" value={form.jobNo} onChange={(e) => update("jobNo", e.target.value)} placeholder="JB-2421" />
+            {errors.jobNo && <span className="form-field__error">{errors.jobNo}</span>}
           </div>
-        </div>
-
-        <div className="form-section">
-          <p className="form-section__title">Item Information</p>
-          <div className="form-grid">
-            <div className={clsx("form-field", "form-field--span2", errors.item && "form-field--error")}>
-              <label htmlFor="item">Item</label>
-              <select id="item" value={form.item} onChange={(e) => update("item", e.target.value)}>
-                <option value="">Select item</option>
-                {activeItems.map((i) => (
-                  <option key={i.id} value={i.itemName}>
-                    {i.itemCode} — {i.itemName}
-                  </option>
-                ))}
-              </select>
-              {errors.item && <span className="form-field__error">{errors.item}</span>}
-            </div>
+          <div className={clsx("form-field", errors.client && "form-field--error")}>
+            <label htmlFor="client">Client</label>
+            <input id="client" type="text" value={form.client} onChange={(e) => update("client", e.target.value)} placeholder="Client name" />
+            {errors.client && <span className="form-field__error">{errors.client}</span>}
           </div>
-        </div>
 
-        <div className="form-section">
-          <p className="form-section__title">Quantity</p>
-          <div className="form-grid">
-            <div className={clsx("form-field", errors.totalQty && "form-field--error")}>
-              <label htmlFor="totalQty">Total Quantity</label>
-              <input id="totalQty" type="number" min="0" value={form.totalQty} onChange={(e) => update("totalQty", e.target.value)} />
-              {errors.totalQty && <span className="form-field__error">{errors.totalQty}</span>}
-            </div>
-            <div className={clsx("form-field", errors.deliveredQty && "form-field--error")}>
-              <label htmlFor="deliveredQty">Delivered Quantity</label>
-              <input id="deliveredQty" type="number" min="0" value={form.deliveredQty} onChange={(e) => update("deliveredQty", e.target.value)} />
-              {errors.deliveredQty && <span className="form-field__error">{errors.deliveredQty}</span>}
-            </div>
-            <div className="form-field">
-              <label htmlFor="balanceQty">Balance Quantity</label>
-              <input id="balanceQty" type="text" value={balanceQty.toLocaleString()} readOnly />
-            </div>
+          <div className={clsx("form-field", errors.salesperson && "form-field--error")}>
+            <label htmlFor="salesperson">Salesperson</label>
+            <input id="salesperson" type="text" value={form.salesperson} onChange={(e) => update("salesperson", e.target.value)} placeholder="Salesperson name" />
+            {errors.salesperson && <span className="form-field__error">{errors.salesperson}</span>}
           </div>
-        </div>
-
-        <div className="form-section">
-          <p className="form-section__title">Delivery &amp; Status</p>
-          <div className="form-grid">
-            <div className={clsx("form-field", errors.deliveryDate && "form-field--error")}>
-              <label htmlFor="deliveryDate">Delivery Date</label>
-              <input id="deliveryDate" type="date" value={form.deliveryDate} onChange={(e) => update("deliveryDate", e.target.value)} />
-              {errors.deliveryDate && <span className="form-field__error">{errors.deliveryDate}</span>}
-            </div>
-            <div className="form-field">
-              <label htmlFor="status">Status</label>
-              <select id="status" value={form.status} onChange={(e) => update("status", e.target.value)}>
-                {STATUSES.map((status) => (
-                  <option key={status} value={status}>
-                    {status}
-                  </option>
-                ))}
-              </select>
-            </div>
+          <div className={clsx("form-field", errors.item && "form-field--error")}>
+            <label htmlFor="item">Item</label>
+            <select id="item" value={form.item} onChange={(e) => update("item", e.target.value)}>
+              <option value="">Select item</option>
+              {activeItems.map((i) => (
+                <option key={i.id} value={i.itemName}>
+                  {i.itemCode} — {i.itemName}
+                </option>
+              ))}
+            </select>
+            {errors.item && <span className="form-field__error">{errors.item}</span>}
           </div>
-        </div>
 
-        <div className="form-section">
+          <div className={clsx("form-field", errors.totalQty && "form-field--error")}>
+            <label htmlFor="totalQty">Total Quantity</label>
+            <input id="totalQty" type="number" min="0" value={form.totalQty} onChange={(e) => update("totalQty", e.target.value)} />
+            {errors.totalQty && <span className="form-field__error">{errors.totalQty}</span>}
+          </div>
+          <div className={clsx("form-field", errors.deliveredQty && "form-field--error")}>
+            <label htmlFor="deliveredQty">Delivered Quantity</label>
+            <input id="deliveredQty" type="number" min="0" value={form.deliveredQty} onChange={(e) => update("deliveredQty", e.target.value)} />
+            {errors.deliveredQty && <span className="form-field__error">{errors.deliveredQty}</span>}
+          </div>
+
+          <div className="form-field form-field--span2">
+            <label htmlFor="balanceQty">Balance Quantity</label>
+            <input id="balanceQty" type="text" value={balanceQty.toLocaleString()} readOnly />
+          </div>
+
+          <div className={clsx("form-field", errors.deliveryDate && "form-field--error")}>
+            <label htmlFor="deliveryDate">Delivery Date</label>
+            <input id="deliveryDate" type="date" value={form.deliveryDate} onChange={(e) => update("deliveryDate", e.target.value)} />
+            {errors.deliveryDate && <span className="form-field__error">{errors.deliveryDate}</span>}
+          </div>
           <div className="form-field">
+            <label htmlFor="status">Status</label>
+            <select id="status" value={form.status} onChange={(e) => update("status", e.target.value)}>
+              {STATUSES.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-field form-field--span2">
             <label htmlFor="notes">
               Notes <span className="optional">(optional)</span>
             </label>
