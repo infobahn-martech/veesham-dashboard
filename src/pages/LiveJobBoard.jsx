@@ -9,7 +9,7 @@ import StatusBadge from "../components/StatusBadge";
 import "./LiveJobBoard.css";
 
 const REFRESH_INTERVAL_MS = 15000;
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 10;
 const todayStr = new Date().toISOString().slice(0, 10);
 
 function formatDateTime(date) {
