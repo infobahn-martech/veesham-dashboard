@@ -1,13 +1,16 @@
 import AppRoutes from "./routes/AppRoutes";
 import { JobsDataProvider } from "./context/JobsDataContext";
+import { UsersDataProvider } from "./context/UsersDataContext";
 import { ToastProvider } from "./context/ToastContext";
 
 function App() {
   return (
     <JobsDataProvider>
-      <ToastProvider>
-        <AppRoutes />
-      </ToastProvider>
+      <UsersDataProvider>
+        <ToastProvider>
+          <AppRoutes />
+        </ToastProvider>
+      </UsersDataProvider>
     </JobsDataProvider>
   );
 }

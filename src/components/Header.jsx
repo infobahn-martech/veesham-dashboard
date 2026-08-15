@@ -20,6 +20,11 @@ const PAGE_TITLES = {
     title: "Jobs",
     subtitle: "Manage production jobs, quantities, delivery dates and statuses",
   },
+  "/user-management": {
+    micro: "Access control",
+    title: "User Management",
+    subtitle: "Manage system users, roles and access",
+  },
   "/live-job-board": {
     micro: "Real-time tracking",
     title: "Live Job Status Board",

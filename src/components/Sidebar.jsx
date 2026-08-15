@@ -10,6 +10,7 @@ import {
   Package,
   ClipboardList,
   ChevronDown,
+  Users,
 } from "lucide-react";
 import clsx from "clsx";
 import { logout } from "../utils/auth";
@@ -26,6 +27,7 @@ const NAV_ITEMS = [
       { to: "/job-management/jobs", label: "Jobs", icon: ClipboardList },
     ],
   },
+  { to: "/user-management", label: "User Management", icon: Users },
   { to: "/live-job-board", label: "Live Job Status", icon: Radio },
   { to: "/my-account", label: "My Account", icon: UserCircle },
 ];

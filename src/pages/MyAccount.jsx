@@ -1,11 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import { UserCircle, Mail, ShieldCheck, Building2, KeyRound, LogOut } from "lucide-react";
+import { UserCircle, Mail, ShieldCheck, Building2, Phone, KeyRound, LogOut } from "lucide-react";
 import { getCurrentUser, logout } from "../utils/auth";
+import { useUsersData } from "../context/usersData";
 import "./MyAccount.css";
 
 function MyAccount() {
   const navigate = useNavigate();
   const user = getCurrentUser();
+  const { users } = useUsersData();
+  const matchedUser = users.find((u) => u.email === user?.email);
 
   function handleLogout() {
     logout();
@@ -17,6 +20,7 @@ function MyAccount() {
     { icon: Mail, label: "Email", value: user?.email },
     { icon: ShieldCheck, label: "Role", value: user?.role },
     { icon: Building2, label: "Company", value: user?.company },
+    ...(matchedUser?.phone ? [{ icon: Phone, label: "Phone", value: matchedUser.phone }] : []),
   ];
 
   return (

@@ -7,6 +7,7 @@ import LiveJobBoard from "../pages/LiveJobBoard";
 import MyAccount from "../pages/MyAccount";
 import Items from "../pages/Items";
 import Jobs from "../pages/Jobs";
+import UserManagement from "../pages/UserManagement";
 
 function AppRoutes() {
   return (
@@ -24,6 +25,7 @@ function AppRoutes() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/job-management/items" element={<Items />} />
         <Route path="/job-management/jobs" element={<Jobs />} />
+        <Route path="/user-management" element={<UserManagement />} />
         <Route path="/live-job-board" element={<LiveJobBoard />} />
         <Route path="/my-account" element={<MyAccount />} />
       </Route>

@@ -21,3 +21,22 @@ export function formatTimelineTimestamp(iso) {
   const time = date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hour12: false });
   return `${day} ${time}`;
 }
+
+function isSameDay(a, b) {
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+}
+
+export function formatLastLogin(iso) {
+  if (!iso) return "Never";
+  const date = new Date(iso);
+  const now = new Date();
+  const time = date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hour12: true });
+
+  if (isSameDay(date, now)) return `Today, ${time}`;
+
+  const yesterday = new Date(now);
+  yesterday.setDate(yesterday.getDate() - 1);
+  if (isSameDay(date, yesterday)) return `Yesterday, ${time}`;
+
+  return formatDate(iso);
+}

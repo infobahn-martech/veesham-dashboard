@@ -28,6 +28,36 @@
   margin-bottom: 8px;
 }
 
+.form-section__title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.form-section__title-row .form-section__title {
+  margin-bottom: 0;
+}
+
+.form-section__action {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: transparent;
+  color: var(--amber);
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 2px 0;
+  transition: color var(--transition-fast);
+}
+
+.form-section__action:hover {
+  color: #b5720a;
+}
+
 .form-field {
   display: flex;
   flex-direction: column;
