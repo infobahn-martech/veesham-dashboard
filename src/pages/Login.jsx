@@ -157,15 +157,15 @@ function Login() {
           <div className="login__demo">
             <div className="login__demo-divider">
               <span />
-              Demo access
+          PRODUCTION PORTAL
               <span />
             </div>
             <div className="login__demo-chips">
               <button type="button" className="login__chip" onClick={() => setEmail(DEMO_EMAIL)}>
-                {DEMO_EMAIL}
+           Live Jobs
               </button>
               <button type="button" className="login__chip" onClick={() => setPassword(DEMO_PASSWORD)}>
-                {DEMO_PASSWORD}
+               Production Control
               </button>
             </div>
           </div>
