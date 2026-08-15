@@ -19,6 +19,7 @@ import "./Sidebar.css";
 
 const NAV_ITEMS = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { to: "/user-management", label: "User Management", icon: Users },
   {
     label: "Job Management",
     icon: Boxes,
@@ -27,7 +28,6 @@ const NAV_ITEMS = [
       { to: "/job-management/jobs", label: "Jobs", icon: ClipboardList },
     ],
   },
-  { to: "/user-management", label: "User Management", icon: Users },
   { to: "/live-job-board", label: "Live Job Status", icon: Radio },
   { to: "/my-account", label: "My Account", icon: UserCircle },
 ];

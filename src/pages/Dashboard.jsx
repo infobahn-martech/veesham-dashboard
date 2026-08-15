@@ -238,7 +238,7 @@ function Dashboard() {
             <span className="dashboard__chart-subtitle">Delivered quantity by date</span>
           </div>
           <ResponsiveContainer width="100%" height={180}>
-            <AreaChart data={deliveryTrend} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+            <AreaChart data={deliveryTrend} margin={{ top: 12, right: 8, left: 4, bottom: 0 }}>
               <defs>
                 <linearGradient id="deliveryFill" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#d89b2b" stopOpacity={0.28} />
@@ -247,7 +247,7 @@ function Dashboard() {
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e6ec" vertical={false} />
               <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#69758a" }} axisLine={{ stroke: "#e2e6ec" }} tickLine={false} />
-              <YAxis tick={{ fontSize: 12, fill: "#69758a" }} axisLine={false} tickLine={false} width={44} />
+              <YAxis tick={{ fontSize: 12, fill: "#69758a" }} axisLine={false} tickLine={false} width={60} />
               <Tooltip {...TOOLTIP_STYLE} />
               <Area
                 type="monotone"
