@@ -1,6 +1,7 @@
 import { useState } from "react";
 import clsx from "clsx";
 import Modal from "./Modal";
+import DatePicker from "./DatePicker";
 import { useJobsData, suggestStatus } from "../context/jobsData";
 import { useToast } from "../context/toast";
 import { STATUSES } from "../data/jobs";
@@ -148,7 +149,13 @@ function JobFormModal({ job, onClose }) {
 
           <div className={clsx("form-field", errors.deliveryDate && "form-field--error")}>
             <label htmlFor="deliveryDate">Delivery Date</label>
-            <input id="deliveryDate" type="date" value={form.deliveryDate} onChange={(e) => update("deliveryDate", e.target.value)} />
+            <DatePicker
+              id="deliveryDate"
+              value={form.deliveryDate}
+              onChange={(value) => update("deliveryDate", value)}
+              placeholder="Select delivery date"
+              clearable={false}
+            />
             {errors.deliveryDate && <span className="form-field__error">{errors.deliveryDate}</span>}
           </div>
           <div className="form-field">

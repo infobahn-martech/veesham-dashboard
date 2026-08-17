@@ -10,7 +10,7 @@ function StatCard({ icon: Icon, label, value, variant = "neutral", meta }) {
       <div>
         <p className="stat-card__value">{value}</p>
         <p className="stat-card__label">{label}</p>
-        {meta && <p className={clsx("stat-card__meta", `stat-card__meta--${meta.tone}`)}>{meta.text}</p>}
+        {/* {meta && <p className={clsx("stat-card__meta", `stat-card__meta--${meta.tone}`)}>{meta.text}</p>} */}
       </div>
     </div>
   );

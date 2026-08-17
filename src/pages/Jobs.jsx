@@ -7,6 +7,7 @@ import { STATUSES } from "../data/jobs";
 import { formatDate, formatNumber } from "../utils/format";
 import { getInitials } from "../utils/initials";
 import ActionMenu from "../components/ActionMenu";
+import DatePicker from "../components/DatePicker";
 import StatusBadge from "../components/StatusBadge";
 import JobFormModal from "../components/JobFormModal";
 import JobViewModal from "../components/JobViewModal";
@@ -121,12 +122,12 @@ function Jobs() {
             ))}
           </select>
 
-          <input
-            type="date"
+          <DatePicker
             className="jobs-filter"
-            aria-label="Filter by delivery date"
+            ariaLabel="Filter by delivery date"
+            placeholder="Delivery date"
             value={dateFilter}
-            onChange={(e) => setDateFilter(e.target.value)}
+            onChange={setDateFilter}
           />
 
           <button
