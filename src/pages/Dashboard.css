@@ -154,6 +154,105 @@
   }
 }
 
+.dashboard__live-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(30, 138, 95, 0.12);
+  color: #1e8a5f;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.dashboard__live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #1e8a5f;
+  animation: softPulse 1.6s ease-in-out infinite;
+}
+
+.dashboard__live-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+.dashboard__live-table th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #718096;
+  padding: 10px 14px;
+  border-bottom: 1px solid #e5e9ef;
+  white-space: nowrap;
+}
+
+.dashboard__live-table td {
+  padding: 10px 14px;
+  color: var(--color-text);
+  border-bottom: 1px solid #edf0f4;
+  white-space: nowrap;
+}
+
+.dashboard__live-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.dashboard__live-table th.num,
+.dashboard__live-table td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.dashboard__live-delivered {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  font-family: var(--font-mono);
+}
+
+.dashboard__live-progress-track {
+  display: block;
+  width: 56px;
+  height: 3px;
+  border-radius: 999px;
+  background: #e8ebef;
+  overflow: hidden;
+}
+
+.dashboard__live-progress-fill {
+  display: block;
+  height: 100%;
+  background: var(--amber);
+  border-radius: 999px;
+}
+
+.dashboard__live-balance--zero {
+  color: var(--color-text-muted);
+}
+
+.dashboard__live-balance--pending {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.dashboard__live-empty {
+  padding: 24px 0;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
 .dashboard__table-card {
   padding: 20px 22px;
   animation: fadeSlideIn var(--transition-base) both;

@@ -140,6 +140,19 @@ function Dashboard() {
       .slice(0, 8);
   }, [jobs]);
 
+  const liveJobs = useMemo(() => {
+    const priorityOrder = { Delayed: 0, Hold: 1, WFA: 2, "In Progress": 3, Pending: 4, "Partially Delivered": 5, Reprint: 6 };
+    return jobs
+      .filter((j) => j.status !== "Completed")
+      .sort((a, b) => {
+        const pa = priorityOrder[a.status] ?? 9;
+        const pb = priorityOrder[b.status] ?? 9;
+        if (pa !== pb) return pa - pb;
+        return a.deliveryDate.localeCompare(b.deliveryDate);
+      })
+      .slice(0, 10);
+  }, [jobs]);
+
   return (
     <div className="dashboard">
       <div className="dashboard__stats">
@@ -230,6 +243,78 @@ function Dashboard() {
               />
             </BarChart>
           </ResponsiveContainer>
+        </div>
+
+        <div className="card dashboard__chart-card dashboard__chart-card--wide">
+          <div className="dashboard__chart-header">
+            <h2 className="section-title">Live Job Status</h2>
+            <span className="dashboard__live-tag">
+              <span className="dashboard__live-dot" />
+              LIVE
+            </span>
+          </div>
+          <div className="dashboard__table-wrap">
+            <table className="dashboard__live-table">
+              <thead>
+                <tr>
+                  <th>Job No.</th>
+                  <th>Client</th>
+                  <th>Item</th>
+                  <th className="num">Total Qty</th>
+                  <th className="num">Delivered</th>
+                  <th className="num">Balance</th>
+                  <th>Delivery Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {liveJobs.map((job) => {
+                  const progress = job.totalQty > 0 ? Math.min(100, (job.deliveredQty / job.totalQty) * 100) : 0;
+                  return (
+                    <tr key={job.id}>
+                      <td className="dashboard__jobno">{job.jobNo}</td>
+                      <td>
+                        <div className="dashboard__client">
+                          <span className="dashboard__client-avatar">{getInitials(job.client)}</span>
+                          <span>{job.client}</span>
+                        </div>
+                      </td>
+                      <td>{job.item}</td>
+                      <td className="num">{job.totalQty.toLocaleString()}</td>
+                      <td className="num">
+                        <div className="dashboard__live-delivered">
+                          <span>{job.deliveredQty.toLocaleString()}</span>
+                          <span className="dashboard__live-progress-track">
+                            <span className="dashboard__live-progress-fill" style={{ width: `${progress}%` }} />
+                          </span>
+                        </div>
+                      </td>
+                      <td className={`num ${job.balanceQty === 0 ? "dashboard__live-balance--zero" : "dashboard__live-balance--pending"}`}>
+                        {job.balanceQty.toLocaleString()}
+                      </td>
+                      <td className="dashboard__date">
+                        {new Date(job.deliveryDate).toLocaleDateString("en-GB", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </td>
+                      <td>
+                        <StatusBadge status={job.status} />
+                      </td>
+                    </tr>
+                  );
+                })}
+                {liveJobs.length === 0 && (
+                  <tr>
+                    <td colSpan={8} className="dashboard__live-empty">
+                      No active jobs right now.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <div className="card dashboard__chart-card dashboard__chart-card--wide">
