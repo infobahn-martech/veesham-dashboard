@@ -328,6 +328,22 @@
   background: rgba(224, 105, 77, 0.06);
 }
 
+.job-board__status-btn {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 999px;
+  transition: filter var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.job-board__status-btn:hover,
+.job-board__status-btn:focus-visible {
+  filter: brightness(0.96);
+  box-shadow: 0 0 0 2px var(--amber-soft);
+  outline: none;
+}
+
 .job-board__empty {
   text-align: center;
   color: var(--color-text-muted);

@@ -6,6 +6,7 @@ import { STATUSES } from "../data/jobs";
 import { useJobsData } from "../context/jobsData";
 import { getInitials } from "../utils/initials";
 import StatusBadge from "../components/StatusBadge";
+import JobStatusModal from "../components/JobStatusModal";
 import "./LiveJobBoard.css";
 
 const REFRESH_INTERVAL_MS = 15000;
@@ -31,6 +32,7 @@ function LiveJobBoard() {
   const [isTvMode, setIsTvMode] = useState(false);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [appliedFilters, setAppliedFilters] = useState({ search, statusFilter, todayOnly });
+  const [statusJob, setStatusJob] = useState(null);
 
   useEffect(() => {
     const clockTimer = setInterval(() => setNow(new Date()), 1000);
@@ -220,7 +222,14 @@ function LiveJobBoard() {
                       })}
                     </td>
                     <td>
-                      <StatusBadge status={job.status} />
+                      <button
+                        type="button"
+                        className="job-board__status-btn"
+                        onClick={() => setStatusJob(job)}
+                        aria-label={`Update status for ${job.jobNo}`}
+                      >
+                        <StatusBadge status={job.status} />
+                      </button>
                     </td>
                   </tr>
                 );
@@ -253,6 +262,8 @@ function LiveJobBoard() {
           </div>
         )}
       </div>
+
+      {statusJob && <JobStatusModal job={statusJob} onClose={() => setStatusJob(null)} />}
     </div>
   );
 }
